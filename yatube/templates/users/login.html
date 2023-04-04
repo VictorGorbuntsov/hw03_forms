@@ -59,15 +59,13 @@
             <button type="submit" class="btn btn-primary">
               Войти
             </button>
-            <!-- Тест на внимательность. Без переопределения шаблона этого адреса
-            не существует. Нужно что-то делать, иначе все упадет -->
-            <button type="submit" class="btn btn-primary">
+            <a href="{% url 'password_reset' %}" class="btn btn-primary">
               Забыл(а) пароль? Вспоминай!
-            </button>
+            </a>
           </div>
           </form>
-        </div> <!-- card body -->
-      </div> <!-- card -->
-    </div> <!-- col -->
-</div> <!-- row -->
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}

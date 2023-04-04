@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .models import Group, Post, User
 from .forms import PostForm
+from .utils import get_page
 
 
 def index(request):
@@ -24,6 +25,7 @@ def group_posts(request, slug):
     context = {
         'group': group,
         'posts': posts,
+        'page_obj': get_page(request, posts),
     }
     return render(request, 'posts/group_list.html', context)
 
