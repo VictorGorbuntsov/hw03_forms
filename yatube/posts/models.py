@@ -37,9 +37,9 @@ class Group(models.Model):
     slug = models.SlugField(unique=True, verbose_name='Параметр')
     description = models.TextField(verbose_name='Описание')
 
-    #class Meta:
-    #    verbose_name = 'Заголовок'
-    #    verbose_name_plural = 'Заголовки'
+    class Meta:
+        verbose_name = 'Заголовок'
+        verbose_name_plural = 'Заголовки'
 
     def __str__(self):
         return self.title
