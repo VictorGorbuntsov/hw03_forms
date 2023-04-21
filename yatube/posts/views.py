@@ -3,12 +3,12 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Group, Post, User
 from .forms import PostForm
-from .utils import get_page
+from .utils import get_page_context
 
 
 def index(request):
     context = {
-        'page_obj': get_page(request, Post.objects.all())
+        'page_obj': get_page_context(request, Post.objects.all())
     }
     return render(request, 'posts/index.html', context)
 
@@ -19,7 +19,7 @@ def group_posts(request, slug):
     context = {
         'group': group,
         'posts': posts,
-        'page_obj': get_page(request, posts),
+        'page_obj': get_page_context(request, posts),
     }
     return render(request, 'posts/group_list.html', context)
 
@@ -30,7 +30,7 @@ def profile(request, username):
                                         ).filter(author__username=username)
     context = {
         'author': author,
-        'page_obj': get_page(request, posts),
+        'page_obj': get_page_context(request, posts),
     }
     return render(request, 'posts/profile.html', context)
 
