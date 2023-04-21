@@ -3,23 +3,23 @@
   {{ group.title }}
 {% endblock %}
 {% block content %}
-
 <div class="container py-5">
-<h1>{{ group.title }}</h1>
-<p>{{ group.description|linebreaks }}</p>
-  {% for post in posts %}
-  <article>
-    <br>Автор: {{ post.author.get_full_name }}
-    <br>Дата публикации: {{ post.pub_date|date:"d E Y" }}
-    <p>{{ post.text|linebreaks }}</p>
-    <a class="btn btn-primary" href="{% url 'posts:profile' post.author %}">
-      Все поcты пользователя
-    </a>
-    <a class="btn btn-primary" href="{% url 'posts:post_detail' post.id %}">
-      Подробная информация
-    </a>
-  </article>
-{% if not forloop.last %}<hr>{% endif %}
-{% endfor %}
-{% include 'includes/paginator.html' %}
+  <h1>{{ group.title }}</h1>
+    <p>{{ group.description|linebreaks }}</p>
+    {% for post in posts %}
+      <article>
+        <br>Автор поста: {{ post.author.get_full_name }}
+        <br>Дата публикации: {{ post.pub_date|date:"d E Y" }}
+        <p>{{ post.text|linebreaks }}</p>
+        <a class="btn btn-primary" href="{% url 'posts:profile' post.author %}">
+          Все поcты пользователя
+        </a>
+        <a class="btn btn-primary" href="{% url 'posts:post_detail' post.id %}">
+          Подробная информация
+        </a>
+      </article>
+      {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+  {% include 'posts/includes/paginator.html' %}
+</div>
 {% endblock %}

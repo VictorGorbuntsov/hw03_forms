@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-  {% if is_edit %}
-    Редактировать запись
-  {% else %}
-    Добавить запись
-  {% endif %}
+  {% if form.instance.pk %}Редактировать запись{% else %}Добавить запись{% endif %}
 {% endblock %}
 {% load user_filters %}
 {% block content %}
@@ -12,13 +8,8 @@
   <div class="col-md-8 p-5">
     <div class="card">
       <div class="navbar navbar-light" style="background-color: lightskyblue">
-        {% if is_edit %}
-        Редактировать пост
-        {% else %}
-        Новый пост
-        {% endif %}
+        {% if form.instance.pk %}Редактировать пост{% else %}Новый пост{% endif %}
       </div>
-
       {% load user_filters %}
       {% if form.errors %}
         {% for field in form %}
@@ -34,8 +25,8 @@
           </div>
         {% endfor %}
       {% endif %}
-      <div class="card-body">
-        {% if is_edit %}
+      {% include 'includes/error_handling.html' %}
+        {% if form.instance.pk %}
           <form action="{% url 'posts:post_edit' post_id %}"
             method="post" enctype="multipart/form-data">
         {% else %}
@@ -44,30 +35,10 @@
         {% endif %}
         {% csrf_token %}
 
-        {% for field in form %}
-          <div class="form-group row my-3">
-            <label for="{{ field.id_for_label }}">
-              {{ field.label }}
-              {% if field.field.required %}
-                <span class="required text-danger">*</span>
-              {% endif %}
-            </label>
-            {{ field|addclass:'form-control' }}
-            {% if field.help_text %}
-              <small id="{{ field.id_for_label }}-help"
-                      class="form-text text-muted">
-                {{ form.group.label }}
-              </small>
-            {% endif %}
-          </div>
-        {% endfor %}
+        {% include 'users/login.html' %}
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-primary">
-            {% if is_edit %}
-              Сохранить изменения
-            {% else %}
-              Добавить новый пост
-            {% endif %}
+            {% if form.instance.pk %}Сохранить изменения{% else %}Добавить новый пост{% endif %}
           </button>
         </div>
         </form>
@@ -75,5 +46,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}

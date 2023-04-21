@@ -1,20 +1,15 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render, redirect
-from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+
 from .models import Group, Post, User
 from .forms import PostForm
 from .utils import get_page
 
 
 def index(request):
-    posts = Post.objects.all().order_by('-pub_date')
-    paginator = Paginator(posts, settings.POSTS_ON_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
     context = {
-        'posts': posts,
-        'page_obj': page_obj,
+        'page_obj': get_page(request, Post.objects.all())
     }
     return render(request, 'posts/index.html', context)
 
@@ -32,26 +27,19 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    posts = Post.objects.select_related('group',
-                                        ).filter(author__username=username)
-    paginator = Paginator(posts, settings.POSTS_ON_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    template = 'posts/profile.html'
     context = {
         'author': author,
-        'page_obj': page_obj,
     }
-    return render(request, template, context)
+    context.update(get_page(author.posts.all(), request))
+    return render(request, 'posts/profile.html', context)
 
 
 def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)
-    template = 'posts/post_detail.html'
     context = {
         'post': post
     }
-    return render(request, template, context)
+    return render(request, 'posts/post_detail.html', context)
 
 
 @login_required
@@ -74,7 +62,7 @@ def post_create(request):
 def post_edit(request, post_id):
     is_edit = True
     post = get_object_or_404(Post, pk=post_id)
-    if post.author == request.user:
+    if post.author != request.user:
         form = PostForm(
             request.POST or None,
             files=request.FILES or None,

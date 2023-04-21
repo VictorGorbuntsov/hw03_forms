@@ -1,5 +1,4 @@
 {% load static %}
-<header>
     <nav class="navbar navbar-light" style="background-color: lightskyblue">
       <div class="container">
         <a class="navbar-brand" href="{% url 'posts:index' %}">
@@ -7,13 +6,15 @@
           <span style="color:red">Ya</span>tube
         </a>
         <ul class="nav nav-pills">
+        {% with request.resolver_match.view_name as view_name %}
           <li class="nav-item"> 
             <a class="nav-link
-            {% if request.resolver_match.view_name  == 'about:author' %}
+            {% if view_name  == 'about:author' %}
               active
             {% endif %}"
             href="{% url 'about:author' %}">Об авторе</a>
           </li>
+        {% endwith %}
           <li class="nav-item">
             <a class="nav-link 
             {% if request.resolver_match.view_name  == 'about:tech' %}
@@ -45,7 +46,7 @@
             href="{% url 'users:logout' %}">Выйти</a>
           </li>
           <li>
-            Пользователь: {{ user.username }}
+            Пользователь: {{ post.author.get_full_name }}
           </li>
           {% else %}
           <li class="nav-item"> 
@@ -66,5 +67,3 @@
         </ul>
       </div>
     </nav>      
-  </header> 
-
