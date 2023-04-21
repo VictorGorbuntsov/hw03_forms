@@ -27,15 +27,17 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
+    posts = Post.objects.select_related('group',
+                                        ).filter(author__username=username)
     context = {
         'author': author,
+        'page_obj': get_page(request, posts),
     }
-    context.update(get_page(author.posts.all(), request))
     return render(request, 'posts/profile.html', context)
 
 
 def post_detail(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, pk=post_id)
     context = {
         'post': post
     }
