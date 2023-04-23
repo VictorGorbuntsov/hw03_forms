@@ -64,14 +64,15 @@ def post_edit(request, post_id):
     is_edit = True
     post = get_object_or_404(Post, pk=post_id)
     if post.author != request.user:
-        form = PostForm(
-            request.POST or None,
-            files=request.FILES or None,
-            instance=post
-        )
-        if form.is_valid():
-            form.save()
-            return redirect('posts:post_detail', post_id=post_id)
+        return redirect('posts:post_detail', post_id=post_id)
+
+    form = PostForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=post
+    )
+    if form.is_valid():
+        form.save()
+        return redirect('posts:post_detail', post_id=post_id)
         context = {'form': form, 'is_edit': is_edit, 'post_id': post_id}
         return render(request, 'posts/create_post.html', context)
-    return redirect('posts:post_detail', post_id=post_id)
