@@ -3,7 +3,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from django import forms
 
-from posts.models import Post, Group
+from ..models import Post, Group
 
 User = get_user_model()
 
@@ -30,9 +30,8 @@ class PostModelTest(TestCase):
 
     def test_pages_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
-        # Собираем в словарь пары "имя_html_шаблона: reverse(name)"
         templates_pages_names = {
-            'posts/index.html': reverse('posts:home'),
+            'posts/index.html': reverse('posts:index'),
             'posts/create_post.html': reverse('posts:create_post'),
             'posts/group_list.html': reverse('posts:group_list'),
             'posts/post_detail.html': (
@@ -55,7 +54,7 @@ class PostModelTest(TestCase):
     def test_group_list_context(self):
         """Проверка Group list использует правильные данные в контекст."""
         response = self.authorized_client.get(
-            reverse('posts:group_list', kwargs={'slug_name': 'test_slug'}))
+            reverse('posts:group_list', kwargs={'slug': self.group.slug}))
         post = Post.objects.select_related(
             'author', 'group').filter(group=self.group)[0]
 
@@ -149,7 +148,7 @@ class PaginatorViewTest(TestCase):
 
     def test_paginator_first_page(self):
         """Проверка корректной работы paginator."""
-        list_of_check_page = ['/', '/group/test_slug/', '/profile/NoName/']
+        list_of_check_page = ['/', '/group/test-slug/', '/profile/HasNoName/']
         for page in list_of_check_page:
             with self.subTest(adress=page):
                 response = self.client.get(page)

@@ -6,20 +6,12 @@
 <div class="container py-5">
   <h1>{{ group.title }}</h1>
     <p>{{ group.description|linebreaks }}</p>
-    {% for post in posts %}
+    {% for post in page_obj %}
       <article>
-        <br>Автор поста: {{ post.author.get_full_name }}
-        <br>Дата публикации: {{ post.pub_date|date:"d E Y" }}
-        <p>{{ post.text|linebreaks }}</p>
-        <a class="btn btn-primary" href="{% url 'posts:profile' post.author %}">
-          Все поcты пользователя
-        </a>
-        <a class="btn btn-primary" href="{% url 'posts:post_detail' post.id %}">
-          Подробная информация
-        </a>
+        {% include 'posts/post_cart.html' with group_link=False profile_link=True %}
       </article>
       {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
-  {% include 'posts/includes/paginator.html' %}
 </div>
+{% include 'posts/includes/paginator.html' %}
 {% endblock %}

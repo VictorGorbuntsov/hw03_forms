@@ -11,23 +11,9 @@
         {% if form.instance.pk %}Редактировать пост{% else %}Новый пост{% endif %}
       </div>
       {% load user_filters %}
-      {% if form.errors %}
-        {% for field in form %}
-          {% for error in field.errors %}
-            <div class="alert alert-danger">
-              {{ error|escape }}
-            </div>
-          {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-          <div class="alert alert-danger">
-            {{ error|escape }}
-          </div>
-        {% endfor %}
-      {% endif %}
       {% include 'includes/error_handling.html' %}
         {% if form.instance.pk %}
-          <form action="{% url 'posts:post_edit' post_id %}"
+          <form action="{% url 'posts:post_edit' form.instance.pk %}"
             method="post" enctype="multipart/form-data">
         {% else %}
           <form action="{% url 'posts:create' %}"
@@ -35,7 +21,7 @@
         {% endif %}
         {% csrf_token %}
 
-        {% include 'users/login.html' %}
+        {% include 'includes/form_cycle.html' %}
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-primary">
             {% if form.instance.pk %}Сохранить изменения{% else %}Добавить новый пост{% endif %}

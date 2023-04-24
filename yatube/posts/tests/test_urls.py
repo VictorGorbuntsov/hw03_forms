@@ -31,12 +31,12 @@ class PostModelTest(TestCase):
 
     def test_group_url_location(self):
         """Страница / доступна любому пользователю."""
-        resource = self.client.get('/group/test_slag/')
+        resource = self.client.get(f'/group/{self.group.slug}/')
         self.assertEqual(resource.status_code, 200)
 
     def test_profile_url_lacation(self):
         """Страница / доступна любому пользователю."""
-        resource = self.client.get('/profile/test_author/')
+        resource = self.client.get(f'/profile/{self.user}/')
         self.assertEqual(resource.status_code, 200)
 
     def test_post_id_url_location(self):

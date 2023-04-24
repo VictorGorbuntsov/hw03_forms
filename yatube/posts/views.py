@@ -7,18 +7,18 @@ from .utils import get_page_context
 
 
 def index(request):
+    posts = Post.objects.select_related()
     context = {
-        'page_obj': get_page_context(request, Post.objects.all())
+        'page_obj': get_page_context(request, posts)
     }
     return render(request, 'posts/index.html', context)
 
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = group.posts.all()
+    posts = group.posts.select_related('group', 'author')
     context = {
         'group': group,
-        'posts': posts,
         'page_obj': get_page_context(request, posts),
     }
     return render(request, 'posts/group_list.html', context)
@@ -26,8 +26,7 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    posts = Post.objects.select_related('group',
-                                        ).filter(author__username=username)
+    posts = author.posts.select_related('group')
     context = {
         'author': author,
         'page_obj': get_page_context(request, posts),
@@ -45,11 +44,9 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
-    is_edit = False
     form = PostForm(request.POST, None)
     context = {
         'form': form,
-        'is_edit': is_edit,
     }
     if not form.is_valid():
         return render(request, 'posts/create_post.html', context)
