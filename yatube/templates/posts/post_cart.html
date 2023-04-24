@@ -3,7 +3,7 @@
         <li>
           Автор: {{ author.get_full_name }}
           {% if profile_link %}
-            <a href="{% url 'posts:profile' post.author %}"></a>
+            <a href="{% url 'posts:profile' post.author %}">все посты пользователя</a>
           {% endif %}
         </li>
         <li>

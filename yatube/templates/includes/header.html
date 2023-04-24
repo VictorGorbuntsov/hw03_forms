@@ -47,7 +47,6 @@
           </li>
           <li>
             Пользователь: {{ post.author.get_full_name }}
-              <a href="{% url 'posts:profile' post.author %}"></a>
           </li>
           {% else %}
           <li class="nav-item"> 
