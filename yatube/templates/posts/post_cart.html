@@ -1,9 +1,9 @@
 <article>
     <ul>
         <li>
+          Автор: {{ author.get_full_name }}
           {% if profile_link %}
-            Автор: {{ author.get_full_name }}
-              <a href="{% url 'posts:profile' post.author %}">все посты пользователя </a>
+            <a href="{% url 'posts:profile' post.author %}"></a>
           {% endif %}
         </li>
         <li>
