@@ -7,10 +7,8 @@
   <h1>{{ group.title }}</h1>
     <p>{{ group.description|linebreaks }}</p>
     {% for post in page_obj %}
-      <article>
-        {% include 'posts/post_cart.html' with group_link=False profile_link=True %}
-      </article>
-      {% if not forloop.last %}<hr>{% endif %}
+    {% include 'posts/includes/post_cart.html' with group_link=True %}
+    {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
 </div>
 {% include 'posts/includes/paginator.html' %}

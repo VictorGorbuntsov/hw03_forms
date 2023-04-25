@@ -7,7 +7,7 @@ from .utils import get_page_context
 
 
 def index(request):
-    posts = Post.objects.select_related()
+    posts = Post.objects.select_related('group', 'author')
     context = {
         'page_obj': get_page_context(request, posts)
     }
@@ -16,7 +16,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = group.posts.select_related('group', 'author')
+    posts = group.posts.select_related('author')
     context = {
         'group': group,
         'page_obj': get_page_context(request, posts),
