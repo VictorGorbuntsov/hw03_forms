@@ -50,7 +50,7 @@
             {% if request.resolver_match.view_name  == 'posts:profile' %}
               active
             {% endif %}"
-              href="{% url 'posts:profile' user.username %}">Пользователь: {{ user.username }}</a>
+            href="{% url 'posts:profile' user.username %}">Пользователь: {{ user.username }}</a>
           </li>
           {% else %}
           <li class="nav-item"> 
